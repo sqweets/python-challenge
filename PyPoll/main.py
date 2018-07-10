@@ -15,7 +15,7 @@ with open(pybank_csv, newline="") as csvfile:
 
     # Initialization
     votes = 0
-    candidates = []
+    candidates = {}
 
     # Calculations
     for row in cin:
@@ -26,13 +26,15 @@ with open(pybank_csv, newline="") as csvfile:
         if (votes >= 2):
             if row[2] not in candidates:
                 # Add new candidate
+                candidate.append(row[2])
+                candidate.append(1)
                 candidates.append(row[2])
         else:
             # First candidate
             candidates.append(row[2])
 
 
-    print(candidates)
+    
 
     # Compute Average Change (and round to 2 decimals)
 #    average_change = sum_of_monthly_change / (months - 1)
