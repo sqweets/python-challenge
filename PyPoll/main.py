@@ -23,30 +23,47 @@ with open(pybank_csv, newline="") as csvfile:
         votes += 1
 
         # Find candidates
-        if (votes >= 2):
-            if row[2] not in candidates:
-                # Add new candidate
-                candidate.append(row[2])
-                candidate.append(1)
-                candidates.append(row[2])
+        if row[2] not in candidates:
+            # Add new candidate
+            candidates[row[2]] = 1
         else:
             # First candidate
-            candidates.append(row[2])
+            candidates[row[2]] += 1
 
+    winner = ''
+    current_highest_votes = 0
 
-    
+    # Print to terminal
+    print("\nElection Results")
+    print("-------------------------")
+    print("Total Votes: " + str(votes))
+    print("-------------------------")
+    for key, value in candidates.items():
+        # Figure out the winner
+        if (value > current_highest_votes):
+            current_highest_votes = value
+            winner = key
 
-    # Compute Average Change (and round to 2 decimals)
-#    average_change = sum_of_monthly_change / (months - 1)
-#    average_change = float("{0:.2f}".format(average_change))
-
-    # Print Report
+        # Print out each candidates data
+        print(key + ": "+ str(float("{0:.2f}".format(100 * (value/votes)))) + "% (" + str(value) + ")")
+    print("-------------------------")
+    print("Winner: " + winner)
+    print("-------------------------")
 
     # Print to text file
-#    textfile = open("financial_analysis.txt", "w") 
+    textfile = open("voting_analysis.txt", "w") 
  
-#    textfile.write("Financial Analysis\n") 
+    textfile.write("Election Results\n") 
+    textfile.write("-------------------------\n") 
+    textfile.write("Total Votes: " + str(votes) + "\n") 
+    textfile.write("-------------------------\n") 
+    for key, value in candidates.items():
+        # Print out each candidates data
+        textfile.write(key + ": "+ str(float("{0:.2f}".format(100 * (value/votes)))) + "% (" + str(value) + ")\n")
+    textfile.write("-------------------------\n")
+    textfile.write("Winner: " + winner + "\n")
+    textfile.write("-------------------------\n")
  
-#    textfile.close() 
+    textfile.close() 
 
-
+    
