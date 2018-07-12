@@ -1,15 +1,23 @@
 # PyPoll application
 
-# Last row incomplete
+# NOTE 1
+# Last row incomplete in datafile
 # data: 19129737, Queen, no candidate
+# Deleted since invalid
+
+# NOTE 2
+# The code below works but its not very elegant mainly because of calculating the percent twice.
+# Since this is a small dataset, etc. I left as is, however, the way think I would fix this is to
+# change the dict to a dictionary of lists with the lists being [votes, percentage of votes].
+# However, I don't know how to handle the for loop starting at line 30.  Suggestions welcome.
 
 import csv
 import os
 
 # Path to input file
-pybank_csv = os.path.join("..", "..", "election_data.csv")
+pypoll_csv = os.path.join("..", "..", "election_data.csv")
 
-with open(pybank_csv, newline="") as csvfile:
+with open(pypoll_csv, newline="") as csvfile:
     cin = csv.reader(csvfile, delimiter=",")
     next(cin) # Skip header
 
@@ -17,17 +25,17 @@ with open(pybank_csv, newline="") as csvfile:
     votes = 0
     candidates = {}
 
-    # Calculations
+    # Find the candidates
     for row in cin:
         # Compute total votes
         votes += 1
 
-        # Find candidates
+        # Add candidates and sum up votes
         if row[2] not in candidates:
             # Add new candidate
             candidates[row[2]] = 1
         else:
-            # First candidate
+            # Increment votes
             candidates[row[2]] += 1
 
     winner = ''
