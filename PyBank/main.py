@@ -20,6 +20,7 @@ with open(pybank_csv, newline="") as csvfile:
     sum_of_monthly_change = 0
     gi_date = ""
     gd_date = ""
+    avg_change = {}
 
     # Calculations
     for row in cin:
@@ -33,28 +34,22 @@ with open(pybank_csv, newline="") as csvfile:
         # Start calculations on second month
         if (months >= 2):
             change = int(row[1]) - previous_month
+            avg_change[row[0]] = change    # save the change in dictionary with date
             previous_month = int(row[1])
         else:
             # First month
             change = 0
             previous_month = int(row[1])
 
-        # Add change to running sum
-        sum_of_monthly_change = sum_of_monthly_change + change
+    # Get average change values
+    average_change = float("{0:.2f}".format(sum(avg_change.values())/(months - 1)))
+    greatest_increase = max(avg_change.values())
+    gi_date = max(avg_change, key=avg_change.get)
+    greatest_decrease = min(avg_change.values())
+    gd_date = min(avg_change, key=avg_change.get)
 
-        # Save greatest increase
-        if (change > greatest_increase):
-            greatest_increase = change
-            gi_date = row[0]
-        elif (change < greatest_decrease):
-            greatest_decrease = change
-            gd_date = row[0]
 
-    # Compute Average Change (and round to 2 decimals)
-    average_change = sum_of_monthly_change / (months - 1)
-    average_change = float("{0:.2f}".format(average_change))
-
-    # Print Report
+    # Print Report to console
     print("\nFinancial Analysis")
     print("---------------------------")
     print("Total Months: " + str(months))
